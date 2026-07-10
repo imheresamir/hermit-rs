@@ -101,8 +101,20 @@ impl KernelSrc {
 		let status = cargo.status().expect("failed to start kernel build");
 		assert!(status.success());
 
+		// The kernel is built by `xtask` for the full Hermit target triple
+		// (see kernel/xtask/src/arch.rs `cargo_args`), which differs from the
+		// short `CARGO_CFG_TARGET_ARCH` (e.g. aarch64 -> aarch64-unknown-none-softfloat).
+		// Use that triple so we link the real kernel archive, not a stray one.
+		let kernel_target = match arch.to_str() {
+			Some("aarch64") => "aarch64-unknown-none-softfloat",
+			Some("aarch64_be") => "aarch64_be-unknown-none-softfloat",
+			Some("riscv64") => "riscv64gc-unknown-none-elf",
+			Some("x86_64") => "x86_64-unknown-none",
+			other => other.unwrap_or("aarch64-unknown-none-softfloat"),
+		};
+
 		let lib_location = target_dir
-			.join(&arch)
+			.join(kernel_target)
 			.join(&profile)
 			.canonicalize()
 			.unwrap();
