@@ -82,6 +82,13 @@ nostd = []
 trace = []
 vsock = []
 
+# Phase 5 overflow-injection harness forwarder (option-d-per-task-slot-rebased.md
+# §6.1 / M3). Declared here so the feature name resolves on the `hermit` package;
+# the build.rs `forward_features` passes it through to hermit-kernel, which
+# owns the actual `double-fault-injection` implementation (asm harness + gated
+# self-test). Keep feature-flagged; production builds do not enable it.
+double-fault-injection = []
+
 [build-dependencies]
 cc = "1"
 home = "0.5"
