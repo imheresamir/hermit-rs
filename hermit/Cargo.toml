@@ -88,6 +88,14 @@ vsock = []
 # owns the actual `double-fault-injection` implementation (asm harness + gated
 # self-test). Keep feature-flagged; production builds do not enable it.
 double-fault-injection = []
+# Spike 1 forwarder (docs/rtic-gicv3-async-reactor.md §13 Phase A). Declared
+# here so the feature name resolves on the `hermit` package; forward_features
+# (build.rs) passes it through to hermit-kernel, which owns the actual
+# `pmr-preempt-spike` implementation. Keep feature-flagged; production builds
+# do not enable it.
+pmr-preempt-spike = []
+pmr-band = []  # Spike 2: per-band executor. Forwards to hermit-kernel (build.rs passes it through). Inert unless set.
+pmr-coop-net = []  # Spike 3: COOP-band executor drives network_run via SGI waker. Forwards to hermit-kernel. Inert unless set.
 
 [build-dependencies]
 cc = "1"
