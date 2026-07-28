@@ -96,7 +96,10 @@ double-fault-injection = []
 pmr-preempt-spike = []
 pmr-band = []  # Spike 2: per-band executor. Forwards to hermit-kernel (build.rs passes it through). Inert unless set.
 pmr-coop-net = []  # Spike 3: COOP-band executor drives network_run via SGI waker. Forwards to hermit-kernel. Inert unless set.
-
+# Stackful continuations (docs/stackful-continuations.md) forwarder. Declared
+# here so the feature name resolves on `hermit`; forward_features (build.rs)
+# passes it through to hermit-kernel. Inert unless set.
+continuations = []
 [build-dependencies]
 cc = "1"
 home = "0.5"
